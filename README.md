@@ -68,7 +68,7 @@ This is a classic constraint satisfaction approach used in:
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - C++
 - STL (`vector`, `array`, `fstream`)
