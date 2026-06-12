@@ -7,9 +7,19 @@
 #include <format>
 using namespace std;
 
-array<std::array<char,10>,10> grid{};
-array<std::array<int,10>,10> gridCount{};
-
+array<array<char,10>,10> grid {{
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
+}};
+array<array<int,10>,10> gridCount{};
 array<int,2> lastWordIndexes{};
 bool wasHorizontal = false, wasVertical = false;
 int wLen = 0;
@@ -298,6 +308,10 @@ void removeWord(string word){
 bool crossWord(){
     ifstream fin{"data/The Oxford 5000.txt"};
     string word;
+//     if (!fin.is_open()) {
+//     cout << "ERROR: file not found!\n";
+//     return false;
+// }
     while(fin >> word){
         
         if (isSafe(word))
