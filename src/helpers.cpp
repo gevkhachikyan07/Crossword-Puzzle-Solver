@@ -7,13 +7,13 @@
 #include <format>
 using namespace std;
 
-std::array<std::array<char,10>,10> grid{};
-std::array<std::array<int,10>,10> gridCount{};
-std::ifstream fin;
-std::array<int,2> lastWordIndexes{};
+array<std::array<char,10>,10> grid{};
+array<std::array<int,10>,10> gridCount{};
+
+array<int,2> lastWordIndexes{};
 bool wasHorizontal = false, wasVertical = false;
 int wLen = 0;
-std::vector<History> wordsHist{};
+vector<History> wordsHist{};
 
 void placeFirstWord(string word,int row,int col,bool isHorizontal,bool isVertical){
     if(isHorizontal){
