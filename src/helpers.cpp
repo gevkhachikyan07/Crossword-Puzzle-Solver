@@ -1,40 +1,19 @@
+#include "../include/helpers.h"
 #include <iostream>
-#include <format>
+#include <iomanip>
 #include <array>
 #include <vector>
-using namespace std;
 #include <fstream>
+#include <format>
+using namespace std;
 
-
-array<array<char,10>,10> grid {{
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-    {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
-}};
-array<array<int,10>,10> gridCount{};
-
-ifstream fin{"The Oxford 5000.txt"};
-array<int,2>lastWordIndexes;
-
-bool wasHorizontal,wasVertical;
-int wLen;
-
-struct History
-{
-    string word;
-    int row,col;
-    bool placeHor;
-    bool placeVert;
-};
-vector<History>wordsHist{};
-
+std::array<std::array<char,10>,10> grid{};
+std::array<std::array<int,10>,10> gridCount{};
+std::ifstream fin;
+std::array<int,2> lastWordIndexes{};
+bool wasHorizontal = false, wasVertical = false;
+int wLen = 0;
+std::vector<History> wordsHist{};
 
 void placeFirstWord(string word,int row,int col,bool isHorizontal,bool isVertical){
     if(isHorizontal){
@@ -57,63 +36,48 @@ void placeFirstWord(string word,int row,int col,bool isHorizontal,bool isVertica
     
 }
 
-void enterFirtsWord(){
+void enterFirstWord(){
     string word;
-    int row, col;
+    int row,col;
     int verOrHor;
-
-    cout << "Enter first word: ";
-    cin >> word;
+    cout << "Enter fist word:";
+    getline(cin,word);
     wLen = word.length();
+    cout << endl;
 
-    cout << "Enter position (row col 0-9): ";
+    cout << "Enter position(0-9):";
     cin >> row >> col;
-
-    if (row < 0 || row > 9 || col < 0 || col > 9) {
-        cout << "Enter values from 0 to 9\n";
+    if (row > 9 || row < 0 || col > 9 || col < 0)
+    {
+        cout << "Enter from 0 to 9\n";
         return;
     }
-
-    cout << "Enter direction (1 = vertical, 2 = horizontal): ";
-    cin >> verOrHor;
-
-    if (verOrHor == 1) {
-        wasVertical = true;
-        wasHorizontal = false;
-
-        if (row + wLen > 10) {
-            cout << "Word does not fit vertically\n";
-            return;
-        }
-
-    } else if (verOrHor == 2) {
-        wasVertical = false;
-        wasHorizontal = true;
-
-        if (col + wLen > 10) {
-            cout << "Word does not fit horizontally\n";
-            return;
-        }
-
-    } else {
-        cout << "Enter 1 or 2!\n";
-        return;
-    }
-
     lastWordIndexes.at(0) = row;
     lastWordIndexes.at(1) = col;
+    
+    cout << endl;
 
-    wordsHist.push_back({word, row, col, wasHorizontal, wasVertical});
-
+    cout << "Enter if you want vertical(1) or horizontal(2):";
+    cin >> verOrHor;
+    if (verOrHor == 1)
+    {
+        wasVertical = true;
+        wasHorizontal = false;
+    }else if (verOrHor == 2)
+    {
+        wasVertical = false;
+        wasHorizontal = true;
+    }else {
+        cout << "Enter 1 or 2 !\n";
+        return;
+    }
+    
+    wordsHist.push_back({word,row,col,wasHorizontal,wasVertical});
     placeFirstWord(
-        wordsHist.back().word,
-        wordsHist.back().row,
-        wordsHist.back().col,
-        wordsHist.back().placeHor,
-        wordsHist.back().placeVert
-    );
-}
+        wordsHist.back().word,wordsHist.back().row,wordsHist.back().col,
+        wordsHist.back().placeHor,wordsHist.back().placeVert);
 
+}
 
 
 bool checkSpaces(int found,int currentWLen,int i,int j){
@@ -180,7 +144,6 @@ bool checkSpaces(int found,int currentWLen,int i,int j){
     
     return false;
 }
-
 
 bool repetedWords(string word){
     for (size_t i = 0; i < wordsHist.size(); i++)
@@ -333,7 +296,7 @@ void removeWord(string word){
 
 
 bool crossWord(){
-    ifstream fin{"The Oxford 5000.txt"};
+    ifstream fin{"data/The Oxford 5000.txt"};
     string word;
     while(fin >> word){
         
@@ -360,15 +323,3 @@ void printCrossWord(){
             cout << endl;
         }
 }
-
-int main(){
-    enterFirtsWord();
-
-    if (crossWord()) printCrossWord();
-    
-}
-
-
-
-
-
